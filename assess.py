@@ -2,33 +2,36 @@
 Assss a google classroom assignment with the pyautogc package.
 """
 import os
+from time import sleep
 
 from pyautogc import FeedbackAutomatorBase
 
-SCROLL_DOWN_TO_SLIDE = 5
+
+CHECK_SLIDE = 4
 
 
 class CustomAutomator(FeedbackAutomatorBase):
     def assess(self):
-        self.view_slide(SCROLL_DOWN_TO_SLIDE)
-        self.user_input_grade()
-        self.user_input_feedback()
+        self.view_slide(CHECK_SLIDE)
+        self.context['grade'] = self.user_input_grade()
+        self.context['feedback'] = self.user_input_feedback()
 
     def user_input_grade(self):
         """
-        Take fractional grade right from user input
+        Take fractional grade from user input
         """
         grade = input(f'Input grade for {self.context.get("name")}:\n')
 
         # validate user input
         try:
             self.context['grade'] = int(grade)
-            if not self.is_grade_valid():
+            if not self.is_grade_valid(self.context['grade']):
                 print('Invalid grade')
                 return self.user_input_grade()
         except ValueError:
             print('Invalid grade')
             return self.user_input_grade()
+        return int(grade)
 
     def user_input_feedback(self):
         """
@@ -42,15 +45,15 @@ class CustomAutomator(FeedbackAutomatorBase):
         feedback = input(
             f'Enter feedback code ({feedback_codes}) or custom feedback: '
         )
-        if feedback not in ['a', 'b', 'c']:
+        if feedback not in self.comment_bank():
             confirm = input(
                 f'Entering custom feedback: {feedback}\n\nok? (y/n) '
             )
             if 'n' in confirm:
                 print('Discarding custom feedback.')
                 return self.user_input_feedback()
-
-        self.context['feedback'] = self.comment_bank(feedback)
+            return feedback
+        return self.comment_bank(feedback)
 
     def comment_bank(self, feedback_code=None):
         """
@@ -63,17 +66,23 @@ class CustomAutomator(FeedbackAutomatorBase):
             if feedback_code:
                 return feedback -> str
         """
+        first_name = self.context["name"].split(' ')[0]
         comments = {
-            'a': 'co',
-            'b': 'co',
-            'c': 'co'
+            'a': (
+                f'{first_name}, awesome job breaking down topics into sub-topics.'
+            ),
+            'b': (
+                f'Whoops! {first_name}, it looks like you submitted '
+                'this blank. I\'m returning it without a grade; please '
+                'resubmit ASAP!'
+            ),
         }
         if not feedback_code:
             return comments.keys()
         return comments[feedback_code]
 
 
-def user_selections():
+def user_select_assignment():
     assignment_name = input('Input assignment name ')
     classrooms = [
         'DeVries_Music_6_Curtis_Institute_of_Music',
@@ -111,5 +120,4 @@ def main(assignment, classrooms):
 
 
 if __name__ == '__main__':
-    # main(*user_selections())
-    main('Writing- Informational- 10/26', ['Geltzeiler_HR_4B\n2020-2021'])
+    main('Writing- Creating Subtopics- 11/2', ['Geltzeiler_HR_4B\n2020-2021'])
