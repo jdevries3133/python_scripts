@@ -65,10 +65,6 @@ def send_emails(students: dict):
             else:
                 recipient = st.email
             message = [
-                'Ok, all is working well now: here is a sample email',
-
-                '',
-
                 f'Hi {st.first_name},',
 
                 '',
