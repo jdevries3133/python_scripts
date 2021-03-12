@@ -37,11 +37,6 @@ def main():
     with open(Path(Path(__file__).parent, 'temp.docx'), 'rb') as docxf:
         doc_raw = docxf.read()
 
-
-###############################################################################
-
-            ## Where the magic doesn't happen...  ##
-
     # upload to clicksend API
     payload = b'{"content":"' + b64encode(doc_raw) + b'"}'
     res = requests.post(
@@ -53,10 +48,6 @@ def main():
         },
         data=payload
     )
-
-###############################################################################
-
-
 
 
 if __name__ == '__main__':
