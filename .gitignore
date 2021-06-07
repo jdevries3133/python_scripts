@@ -6,4 +6,5 @@ temp*
 *secret*
 *.csv
 *.xlsx
+*.pptx
 *.txt
