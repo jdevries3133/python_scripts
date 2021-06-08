@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).parent
 logger = logging.getLogger(__name__)
 
 mailer = Star360MailMerge(
-    Path(Path(__file__).parent, 'star360_credentials.csv'),
+    Path(Path(__file__).parent, 'out.csv'),
     debug=False,
 )
 try:

@@ -28,6 +28,7 @@ class Star360MailMerge:
         self.debug = debug   # sends all emails to me
         self.DEBUG_EMAIL = 'jdevries3133@gmail.com'
         self.csv = csv_path
+
         # allow the ability to skip some students on a second run after smtp
         # kick. This should be a list of exact-match student names.
         self.skip = skip if skip else []
@@ -48,15 +49,16 @@ class Star360MailMerge:
             assert next(rd) == ['name', 'username', 'password']
             for name, username, password in rd:
                 st = helper.find_nearest_match(name, auto_yes=True)
-                if st.name not in ['Louis Conyers']:
-                    continue
                 if not st:
                     raise StudentNotFound(f'{name} not found')
                 st.username = username
                 st.password = password
                 # LIMIT RECIPIENTS TO THE FOURTH GRADE.
-                if st.grade_level == 4:
-                    self.students.append(st)
+                if (
+                    st.grade_level == 4
+                    and not st.homeroom == ['DAmario, Danielle','McNeill, Kaity']
+                ):
+                        self.students.append(st)
 
     def send_emails(self):
         # TODO: break up this big function
@@ -79,13 +81,14 @@ class Star360MailMerge:
                     'ance-go.com/welcomeportal/6234531">https://global-zone08.rena'
                     'issance-go.com/welcomeportal/6234531</a>',
                     '2. Click "I\'m a Student"',
-                    f'3. Type your Username: {st.username}',
-                    f'4. Type your Password: {st.password}',
+                    f'3. Type your Username: <b>{st.username}</b>',
+                    f'4. Type your Password: <b>{st.password}</b>',
                     '5. Click "Log In"',
                     '6. Find the Star Math or Reading test (depending on teacher '
                     'directions).',
                     '7. Begin your test. If you need to enter a monitor password, '
                     'type <b>Admin</b>',
+                    '8. When you finish, send a chat to your teacher.',
                     '',
                     '<span style="color: red;">STAY ON THE ZOOM UNTIL WE CONFIRM '
                     'YOU SUBMITTED YOUR TEST</span>',
