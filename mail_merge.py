@@ -2,6 +2,7 @@ from pathlib import Path
 import csv
 from copy import copy
 import sys
+from dataclasses import dataclass
 
 import markdown
 from bs4 import BeautifulSoup
@@ -10,14 +11,20 @@ from teacherHelper import Email
 from teacherHelper.email_ import Message
 
 
-with open('template.md') as markdownf:
+@dataclass
+class Config:
+    subject = '',
+    cc_emails = None  # must be string, currently (not list)
+    template_path = Path(Path(__file__).parent, 'template.md')
+    data_path = Path(Path(__file__).parent, 'data.csv')
+
+
+with open(Config.template_path) as markdownf:
     template = markdownf.read()
 
 with open('data.csv', 'r') as csvf:
     rd = csv.reader(csvf)
-    rows = [r for r in rd]
-    rows = rows[8:]
-    for student, ela, math, par_name, par_email in rows:
+    for student, ela, math, par_name, par_email in rd:
 
         student_first_name = student.strip().split(' ')[-1]
 
@@ -38,10 +45,10 @@ with open('data.csv', 'r') as csvf:
         )
 
         with Email() as emailer:
-            print(f'Email for {student_first_name} sent')
             emailer.send(
                 to=par_email.strip(),
-                subject=f'{student_first_name}\'s ELA and Math Progress',
+                subject=Config.subject,
                 message=message,
-                cc='kgeltzeiler@empacad.org',
+                cc=Config.cc_emails
             )
+            print(f'Email for {student_first_name} sent')
