@@ -1,10 +1,10 @@
 def plural(n):
     if n == 1:
-        pl = 'st'
+        pl = "st"
     elif n == 2:
-        pl = 'nd'
+        pl = "nd"
     elif n == 3:
-        pl = 'rd'
+        pl = "rd"
     else:
-        pl = 'th'
-    return f'{n}{pl}'
+        pl = "th"
+    return f"{n}{pl}"
