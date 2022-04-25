@@ -1,4 +1,4 @@
-from teacherHelper import Helper, Email
+from teacherhelper import Helper, Email
 
 helper = Helper.read_cache()
 

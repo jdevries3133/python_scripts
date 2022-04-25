@@ -7,8 +7,8 @@ from dataclasses import dataclass
 import markdown
 from bs4 import BeautifulSoup
 
-from teacherHelper import Email
-from teacherHelper.email_ import Message
+from teacherhelper import Email
+from teacherhelper.email_ import Message
 
 
 @dataclass
