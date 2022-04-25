@@ -28,8 +28,8 @@ def hotkey(*args):
         pg.keyUp(a)
 
 
-if __name__ == "__main__":
-
+def main():
+    """Iteratively click through to download all the gradebooks as csv files."""
     # focus on chrome
     hotkey("command", "space")
     pg.typewrite("chrome")
@@ -43,3 +43,7 @@ if __name__ == "__main__":
                     sleep(2)
                 continue
             pg.click(*l)
+
+
+if __name__ == "__main__":
+    main()

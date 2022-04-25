@@ -9,6 +9,7 @@ import pyautogui as pg
 
 pg.PAUSE = 0.4
 
+
 for _ in range(24):
     pg.click(x=625, y=13)
     pg.click(x=651, y=85)
