@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Unsubscribe with RFC 2369 (https://www.ietf.org/rfc/rfc2369.txt)
+
 import email
 import sys
 import urllib.request
